@@ -1,9 +1,25 @@
-import Image from "next/image";
+import {performRequest} from "@/lib/datocms";
 
-export default function Home() {
-  return (
-   <div>
-     tlmt isch cool
-   </div>
-  );
+const PAGE_CONTENT_QUERY = `
+  query Home {
+  page {
+    title
+    content {
+      content {
+        value
+      }
+    }
+  }
+}`;
+
+export default async function Home() {
+    const data: any = await performRequest(PAGE_CONTENT_QUERY);
+
+    console.log(data);
+
+    return (
+        <main>
+            <h1>{data?.page?.title}</h1>
+        </main>
+    );
 }

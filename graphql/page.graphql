@@ -1,0 +1,23 @@
+query Page($slug: String!) {
+  page(filter: { slug: { eq: $slug } }) {
+    slug
+    content {
+      __typename
+      ... on TextRecord {
+        ...textBlock
+      }
+    }
+    seo: _seoMetaTags {
+      attributes
+      content
+      tag
+    }
+  }
+  site: _site {
+    favicon: faviconMetaTags {
+      attributes
+      content
+      tag
+    }
+  }
+}

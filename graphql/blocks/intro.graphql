@@ -1,0 +1,4 @@
+fragment introBlock on IntroRecord {
+  id
+  text
+}

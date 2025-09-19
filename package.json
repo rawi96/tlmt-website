@@ -1,28 +1,53 @@
 {
-  "name": "tlmt-website",
+  "name": "tlmt.ch",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "predev": "npm run generate",
+    "dev": "next dev --turbo",
+    "prebuild": "npm run generate",
+    "build": "next build",
+    "prebuild:test": "npm run generate",
+    "build:test": "TESTING_ENV=true next build",
     "start": "next start",
-    "lint": "eslint"
+    "check:unused": "knip",
+    "type-check": "tsc --noEmit",
+    "lint": "next typegen && eslint src --ext .ts,.tsx && npm run type-check && npm run check:unused",
+    "generate": "graphql-codegen",
+    "test": "node test/check-page-errors.js",
+    "test:ci": "npm run build:test && npm run start & node test/check-page-errors.js"
+  },
+  "engines": {
+    "node": "^22.0.0"
   },
   "dependencies": {
-    "@datocms/cda-client": "^0.2.7",
-    "next": "15.5.3",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "@next/env": "^15.0.0",
+    "@smartive/datocms-utils": "^2.0.0",
+    "datocms-structured-text-utils": "^5.0.0",
+    "next": "^15.4.6",
+    "postcss": "^8.5.3",
+    "react": "^19.0.0",
+    "react-datocms": "^7.0.1",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.3",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typed-document-node": "^5.0.9",
+    "@graphql-codegen/typescript": "^4.0.9",
+    "@graphql-codegen/typescript-operations": "^4.2.3",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@smartive/eslint-config": "^6.4.0",
+    "@smartive/prettier-config": "^3.1.2",
+    "@tailwindcss/postcss": "^4.1.5",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.0.0",
+    "graphql": "^16.9.0",
+    "knip": "^5.30.5",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "typescript": "^5.5.3"
   }
 }

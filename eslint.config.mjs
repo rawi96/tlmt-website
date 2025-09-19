@@ -1,25 +1,34 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import { config as smartiveConfig } from '@smartive/eslint-config';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+/** @type {import('eslint').Linter.Config[]} */
+const config = [
+  ...smartiveConfig('nextjs'),
   {
-    ignores: [
-      "node_modules/**",
-      ".next/**",
-      "out/**",
-      "build/**",
-      "next-env.d.ts",
-    ],
+    rules: {
+      'react/forbid-component-props': [
+        'error',
+        {
+          forbid: [
+            {
+              propName: 'className',
+              allowedFor: ['BlockWrapper', 'Tag', 'MuxVideo'],
+              allowedForPatterns: ['Next*', 'Motion*', 'Dato*', '*Svg', 'NavigationMenu*', 'Dialog*'],
+              message: 'Avoid using className',
+            },
+          ],
+        },
+      ],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: ['../*'],
+        },
+      ],
+    },
+  },
+  {
+    ignores: ['test/check-page-errors.js', '**/generated.ts', 'tailwind.config.ts', 'lib/eventless/**/*.ts'],
   },
 ];
 
-export default eslintConfig;
+export default config;
